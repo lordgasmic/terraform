@@ -7,14 +7,20 @@ terraform {
   }
 }
 provider "proxmox" {
-  endpoint  = "https://172.16.0.10:8006"
+  endpoint  = "https://172.16.0.10:8006/"
   api_token = "terraform-prov@pve!terraform=3d269b89-9e2f-47c9-81c5-b1f6a4f8538b"
   insecure  = true
 }
 resource "proxmox_virtual_environment_vm" "test_vm" {
   name      = "lgc-test-vm"
   node_name = "pve"
-  cpu { cores = 2 }
+  agent {
+    enabled = false
+  }
+  cpu {
+    cores = 2
+    type  = "x86-64-v2-AES"
+  }
   memory { dedicated = 2048 }
   disk {
     datastore_id = "local"

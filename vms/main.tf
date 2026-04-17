@@ -30,10 +30,21 @@ resource "proxmox_virtual_environment_vm" "test_vm" {
     }
     user_account {
       username = "debian"
-      keys     = ["ssh-ed25519 AAAAC3..."]
+      password = random_password.ubuntu_vm_password.result
     }
   }
   operating_system {
     type = "l26"
   }
+}
+
+resource "random_password" "ubuntu_vm_password" {
+  length           = 16
+  override_special = "_%@"
+  special          = true
+}
+
+output "ubuntu_vm_password" {
+  value     = random_password.ubuntu_vm_password.result
+  sensitive = true
 }

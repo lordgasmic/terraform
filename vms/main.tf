@@ -34,6 +34,6 @@ resource "proxmox_virtual_environment_vm" "test_vm" {
     }
   }
   operating_system {
-    type = "126"
+    type = "l26"
   }
 }

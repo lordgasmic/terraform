@@ -33,7 +33,7 @@ resource "proxmox_virtual_environment_vm" "test_vm" {
       keys     = ["ssh-ed25519 AAAAC3..."]
     }
   }
-  operation_system {
+  operating_system {
     type = "126"
   }
 }

@@ -7,9 +7,9 @@ terraform {
   }
 }
 provider "proxmox" {
-  endpoint  = "https://pve.internal.lordgasmic.com/"
+  endpoint  = "https://172.16.0.10:8006"
   api_token = "terraform-prov@pve!terraform=3d269b89-9e2f-47c9-81c5-b1f6a4f8538b"
-  insecure  = false
+  insecure  = true
 }
 resource "proxmox_virtual_environment_vm" "test_vm" {
   name      = "lgc-test-vm"

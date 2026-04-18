@@ -10,6 +10,13 @@ provider "proxmox" {
   endpoint  = "https://172.16.0.10:8006/"
   api_token = "terraform-prov@pam!terraform=832349af-e6c7-4d2a-a627-0e194555d7a7"
   insecure  = true
+
+  ssh {
+    agent    = true      # Uses your local ssh-agent
+    username = "root"    # Required when using API tokens
+    # Or instead of agent:
+    # private_key = file("~/.ssh/id_rsa")
+  }
 }
 resource "proxmox_virtual_environment_vm" "test_vm" {
   name      = "lgc-test-vm"

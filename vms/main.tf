@@ -8,7 +8,7 @@ terraform {
 }
 provider "proxmox" {
   endpoint  = "https://172.16.0.10:8006/"
-  api_token = "terraform-prov@pve!terraform=3d269b89-9e2f-47c9-81c5-b1f6a4f8538b"
+  api_token = "terraform-prov@pve!iac=69860781-6ed7-4593-a24f-39d34dd52ccd"
   insecure  = true
 }
 resource "proxmox_virtual_environment_vm" "test_vm" {

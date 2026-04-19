@@ -12,7 +12,7 @@ provider "proxmox" {
   insecure  = true
 
   ssh {
-    agent = true # Uses your local ssh-agent
+    agent    = true             # Uses your local ssh-agent
     username = "terraform-prov" # Required when using API tokens
     # Or instead of agent:
     # private_key = file("~/.ssh/id_rsa")
@@ -30,7 +30,7 @@ resource "proxmox_virtual_environment_vm" "test_vm" {
   }
   memory { dedicated = 2048 }
   disk {
-    datastore_id = "local"
+    datastore_id = "datastore"
     file_id      = "local:iso/debian-13-generic-amd64-20260413-2447.qcow2"
     size         = 20
     interface    = "scsi0"

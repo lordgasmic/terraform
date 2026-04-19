@@ -31,7 +31,7 @@ resource "proxmox_virtual_environment_vm" "test_vm" {
   memory { dedicated = 2048 }
   disk {
     datastore_id = "datastore"
-    file_id      = "local:iso/debian-13-generic-amd64-20260413-2447.qcow2"
+    file_id      = "local:images/debian-13-generic-amd64-20260413-2447.qcow2"
     size         = 20
     interface    = "scsi0"
   }

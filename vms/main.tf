@@ -2,7 +2,7 @@ terraform {
   required_providers {
     proxmox = {
       source  = "bpg/proxmox"
-      version = "0.102.0"
+      version = "0.103.0"
     }
   }
 }
@@ -32,9 +32,9 @@ resource "proxmox_virtual_environment_vm" "test_vm" {
   disk {
     datastore_id = "datastore"
     # file_id      = "local:images/debian-13-generic-amd64-20260413-2447.qcow2"
-    import_from = proxmox_virtual_environment_download_file.latest_debian_13.id
-    size      = 20
-    interface = "scsi0"
+    import_from = proxmox_download_file.latest_debian_13.id
+    size        = 20
+    interface   = "scsi0"
   }
   initialization {
     ip_config {
@@ -58,7 +58,7 @@ resource "random_password" "ubuntu_vm_password" {
   special          = true
 }
 
-resource "proxmox_virtual_environment_download_file" "latest_debian_13" {
+resource "proxmox_download_file" "latest_debian_13" {
   content_type = "import"
   datastore_id = "local"
   node_name    = "pve"

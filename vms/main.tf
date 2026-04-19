@@ -13,7 +13,7 @@ provider "proxmox" {
 
   ssh {
     agent = true # Uses your local ssh-agent
-    # username = "terraform-prov" # Required when using API tokens
+    username = "terraform-prov" # Required when using API tokens
     # Or instead of agent:
     # private_key = file("~/.ssh/id_rsa")
   }

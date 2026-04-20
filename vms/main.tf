@@ -31,10 +31,10 @@ resource "proxmox_virtual_environment_vm" "test_vm" {
   memory { dedicated = 2048 }
   disk {
     datastore_id = "datastore"
-    # file_id      = "local:images/debian-13-generic-amd64-20260413-2447.qcow2"
-    import_from = proxmox_download_file.latest_debian_13.id
-    size        = 20
-    interface   = "scsi0"
+    file_id      = "local:import/debian-13-generic-amd64-20260413-2447.qcow2"
+    # import_from = proxmox_download_file.latest_debian_13.id
+    size      = 20
+    interface = "scsi0"
   }
   initialization {
     ip_config {
@@ -58,14 +58,14 @@ resource "random_password" "ubuntu_vm_password" {
   special          = true
 }
 
-resource "proxmox_download_file" "latest_debian_13" {
-  content_type = "import"
-  datastore_id = "local"
-  node_name    = "pve"
-  url          = "https://cloud.debian.org/images/cloud/trixie/20260413-2447/debian-13-generic-amd64-20260413-2447.qcow2"
-  # need to rename the file to *.qcow2 to indicate the actual file format for import
-  file_name = "debian-13-generic-amd64.qcow2"
-}
+# resource "proxmox_download_file" "latest_debian_13" {
+#   content_type = "import"
+#   datastore_id = "local"
+#   node_name    = "pve"
+#   url          = "https://cloud.debian.org/images/cloud/trixie/20260413-2447/debian-13-generic-amd64-20260413-2447.qcow2"
+#   # need to rename the file to *.qcow2 to indicate the actual file format for import
+#   file_name = "debian-13-generic-amd64.qcow2"
+# }
 
 output "ubuntu_vm_password" {
   value     = random_password.ubuntu_vm_password.result

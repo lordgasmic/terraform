@@ -32,8 +32,8 @@ resource "proxmox_virtual_environment_vm" "test_vm" {
   disk {
     datastore_id = "datastore"
     file_id      = "local:import/debian-13-generic-amd64-20260413-2447.qcow2"
-    size      = 20
-    interface = "scsi0"
+    size         = 20
+    interface    = "scsi0"
   }
   initialization {
     ip_config {
@@ -45,6 +45,9 @@ resource "proxmox_virtual_environment_vm" "test_vm" {
       username = "debian"
       password = random_password.ubuntu_vm_password.result
     }
+  }
+  network_device {
+    bridge = "vmbr0"
   }
   operating_system {
     type = "l26"

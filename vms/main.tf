@@ -41,11 +41,21 @@ resource "proxmox_virtual_environment_vm" "test_vm" {
         address = "dhcp"
       }
     }
-    user_account {
-      username = "debian"
-      password = random_password.ubuntu_vm_password.result
-      keys     = ["ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIP/3+0VN5sDXZIAIzwKtSPrRFRpXdql/6Veu53gGi5Q5 ansible@lgcs-ct-ansible"]
-    }
+    user_data_file_raw = <<-EOT
+      #cloud-config
+      users:
+        - name: debian
+          sudo: ALL=(ALL) NOPASSWD:ALL
+          groups: sudo
+          shell: /bin/bash
+
+        - name: ansible
+          sudo: ALL=(ALL) NOPASSWD:/usr/bin/apt
+          groups: sudo
+          shell: /bin/bash
+          ssh_authorized_keys:
+            - ${trimspace(file("${path.module}/id_ansible.pub"))}
+    EOT
   }
   network_device {
     bridge = "vmbr0"

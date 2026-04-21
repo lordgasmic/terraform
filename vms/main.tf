@@ -41,7 +41,29 @@ resource "proxmox_virtual_environment_vm" "test_vm" {
         address = "dhcp"
       }
     }
-    user_data_file_raw = <<-EOT
+    user_data_file_id = proxmox_virtual_environment_file.cloud_config.id
+  }
+  network_device {
+    bridge = "vmbr0"
+  }
+  operating_system {
+    type = "l26"
+  }
+}
+
+resource "random_password" "ubuntu_vm_password" {
+  length           = 16
+  override_special = "_%@"
+  special          = true
+}
+
+resource "proxmox_virtual_environment_file" "cloud_config" {
+  content_type = "snippets"
+  datastore_id = "local"
+  node_name    = "pve"
+
+  source_raw {
+    data = <<-EOT
       #cloud-config
       users:
         - name: debian
@@ -56,19 +78,9 @@ resource "proxmox_virtual_environment_vm" "test_vm" {
           ssh_authorized_keys:
             - ${trimspace(file("${path.module}/id_ansible.pub"))}
     EOT
-  }
-  network_device {
-    bridge = "vmbr0"
-  }
-  operating_system {
-    type = "l26"
-  }
-}
 
-resource "random_password" "ubuntu_vm_password" {
-  length           = 16
-  override_special = "_%@"
-  special          = true
+    file_name = "cloud-config.yaml"
+  }
 }
 
 output "ubuntu_vm_password" {

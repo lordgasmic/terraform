@@ -44,6 +44,7 @@ resource "proxmox_virtual_environment_vm" "test_vm" {
     user_account {
       username = "debian"
       password = random_password.ubuntu_vm_password.result
+      keys     = ["ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIP/3+0VN5sDXZIAIzwKtSPrRFRpXdql/6Veu53gGi5Q5 ansible@lgcs-ct-ansible"]
     }
   }
   network_device {

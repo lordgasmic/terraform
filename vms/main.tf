@@ -18,21 +18,21 @@ provider "proxmox" {
     # private_key = file("~/.ssh/id_rsa")
   }
 }
-resource "proxmox_virtual_environment_vm" "test_vm" {
-  name      = "lgc-test-vm"
+resource "proxmox_virtual_environment_vm" "lgcs-dev-machine" {
+  name      = "lgc-dev-machine"
   node_name = "pve"
   agent {
     enabled = true
   }
   cpu {
-    cores = 2
+    cores = 8
     type  = "x86-64-v2-AES"
   }
-  memory { dedicated = 2048 }
+  memory { dedicated = 16384 }
   disk {
     datastore_id = "datastore"
     file_id      = "local:import/debian-13-generic-amd64-20260413-2447.qcow2"
-    size         = 20
+    size         = 80
     interface    = "scsi0"
   }
   initialization {
@@ -51,12 +51,6 @@ resource "proxmox_virtual_environment_vm" "test_vm" {
   }
 }
 
-resource "random_password" "ubuntu_vm_password" {
-  length           = 16
-  override_special = "_%@"
-  special          = true
-}
-
 resource "proxmox_virtual_environment_file" "cloud_config" {
   content_type = "snippets"
   datastore_id = "local"
@@ -66,7 +60,7 @@ resource "proxmox_virtual_environment_file" "cloud_config" {
     data = <<-EOT
       #cloud-config
       users:
-        - name: debian
+        - name: devuser
           sudo: ALL=(ALL) NOPASSWD:ALL
           groups: sudo
           shell: /bin/bash
@@ -81,9 +75,4 @@ resource "proxmox_virtual_environment_file" "cloud_config" {
 
     file_name = "cloud-config.yaml"
   }
-}
-
-output "ubuntu_vm_password" {
-  value     = random_password.ubuntu_vm_password.result
-  sensitive = true
 }

@@ -19,10 +19,10 @@ provider "proxmox" {
   }
 }
 resource "proxmox_virtual_environment_vm" "lgcs-dev-machine" {
-  name      = "lgc-dev-machine"
+  name      = "lgcs-dev-machine"
   node_name = "pve"
   agent {
-    enabled = true
+    enabled = false
   }
   cpu {
     cores = 8

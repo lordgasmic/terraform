@@ -6,6 +6,7 @@ terraform {
     }
   }
 }
+
 provider "proxmox" {
   endpoint  = "https://172.16.0.10:8006/"
   api_token = "terraform-prov@pam!terraform=832349af-e6c7-4d2a-a627-0e194555d7a7"
@@ -18,38 +19,39 @@ provider "proxmox" {
     # private_key = file("~/.ssh/id_rsa")
   }
 }
-# resource "proxmox_virtual_environment_vm" "lgcs-dev-machine" {
-#   name      = "lgcs-dev-machine"
-#   node_name = "pve"
-#   agent {
-#     enabled = false
-#   }
-#   cpu {
-#     cores = 8
-#     type  = "x86-64-v2-AES"
-#   }
-#   memory { dedicated = 16384 }
-#   disk {
-#     datastore_id = "datastore"
-#     file_id      = "local:import/debian-13-generic-amd64-20260413-2447.qcow2"
-#     size         = 80
-#     interface    = "scsi0"
-#   }
-#   initialization {
-#     ip_config {
-#       ipv4 {
-#         address = "dhcp"
-#       }
-#     }
-#     user_data_file_id = proxmox_virtual_environment_file.cloud_config.id
-#   }
-#   network_device {
-#     bridge = "vmbr0"
-#   }
-#   operating_system {
-#     type = "l26"
-#   }
-# }
+
+resource "proxmox_virtual_environment_vm" "lgcs-dev-machine" {
+  name      = "lgcs-dev-machine"
+  node_name = "pve"
+  agent {
+    enabled = false
+  }
+  cpu {
+    cores = 8
+    type  = "x86-64-v2-AES"
+  }
+  memory { dedicated = 16384 }
+  disk {
+    datastore_id = "datastore"
+    file_id      = "local:import/debian-13-generic-amd64-20260413-2447.qcow2"
+    size         = 80
+    interface    = "scsi0"
+  }
+  initialization {
+    ip_config {
+      ipv4 {
+        address = "dhcp"
+      }
+    }
+    user_data_file_id = proxmox_virtual_environment_file.cloud_config.id
+  }
+  network_device {
+    bridge = "vmbr0"
+  }
+  operating_system {
+    type = "l26"
+  }
+}
 
 resource "proxmox_virtual_environment_file" "cloud_config" {
   content_type = "snippets"
@@ -60,10 +62,12 @@ resource "proxmox_virtual_environment_file" "cloud_config" {
     data = <<-EOT
       #cloud-config
       users:
-        - name: devuser
+        - name: debian
           sudo: ALL=(ALL) NOPASSWD:ALL
           groups: sudo
           shell: /bin/bash
+          ssh_authorized_keys:
+            - ${trimspace(tls_private_key.debian_pk.public_key_openssh)}
 
         - name: ansible
           sudo: ALL=(ALL) NOPASSWD:/usr/bin/apt
@@ -75,4 +79,29 @@ resource "proxmox_virtual_environment_file" "cloud_config" {
 
     file_name = "cloud-config.yaml"
   }
+}
+
+resource "random_password" "debian_vm_password" {
+  length           = 16
+  override_special = "_%@"
+  special          = true
+}
+
+resource "tls_private_key" "debian_pk" {
+  algorithm = "RSA"
+  rsa_bits  = 2048
+}
+
+output "debian_vm_password" {
+  value     = random_password.debian_vm_password.result
+  sensitive = true
+}
+
+output "debain_vm_private_key" {
+  value     = tls_private_key.debian_pk.private_key_pem
+  sensitive = true
+}
+
+output "debian_vm_public_key" {
+  value = tls_private_key.debian_pk.public_key_openssh
 }

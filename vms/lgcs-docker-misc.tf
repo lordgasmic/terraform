@@ -22,11 +22,27 @@ resource "proxmox_virtual_environment_vm" "lgcs-docker-misc" {
       }
     }
     user_data_file_id = proxmox_virtual_environment_file.cloud_config.id
+    meta_data_file_id = proxmox_virtual_environment_file.lgcs-docker-misc-hostname.id
   }
   network_device {
     bridge = "vmbr0"
   }
   operating_system {
     type = "l26"
+  }
+}
+
+resource "proxmox_virtual_environment_file" "lgcs-docker-misc-hostname" {
+  content_type = "snippets"
+  datastore_id = "local"
+  node_name    = "pve"
+
+  source_raw {
+    data = <<-EOF
+    #cloud-config
+    local-hostname: lgcs-docker-misc
+    EOF
+
+    file_name = "lgcs-docker-misc-hostname.yaml"
   }
 }

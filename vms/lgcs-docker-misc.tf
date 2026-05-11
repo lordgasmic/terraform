@@ -25,7 +25,7 @@ resource "proxmox_virtual_environment_vm" "lgcs-docker-misc" {
     meta_data_file_id = proxmox_virtual_environment_file.lgcs-docker-misc-hostname.id
   }
   network_device {
-    bridge = "vmbr0"
+    bridge   = "vmbr0"
     firewall = true
   }
   operating_system {

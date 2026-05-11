@@ -25,7 +25,7 @@ resource "proxmox_virtual_environment_vm" "lgcs-dev-machine" {
     meta_data_file_id = proxmox_virtual_environment_file.lgcs-dev-machine-hostname.id
   }
   network_device {
-    bridge = "vmbr0"
+    bridge   = "vmbr0"
     firewall = true
   }
   operating_system {

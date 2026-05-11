@@ -2,7 +2,7 @@ resource "proxmox_virtual_environment_vm" "lgcs-dev-machine" {
   name      = "lgcs-dev-machine"
   node_name = "pve"
   agent {
-    enabled = true
+    enabled = false
   }
   cpu {
     cores = 8
@@ -25,8 +25,9 @@ resource "proxmox_virtual_environment_vm" "lgcs-dev-machine" {
     meta_data_file_id = proxmox_virtual_environment_file.lgcs-dev-machine-hostname.id
   }
   network_device {
-    bridge   = "vmbr0"
-    firewall = true
+    mac_address = "bc:24:11:00:00:00"
+    bridge      = "vmbr0"
+    firewall    = true
   }
   operating_system {
     type = "l26"

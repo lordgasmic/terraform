@@ -2,7 +2,7 @@ resource "proxmox_virtual_environment_vm" "lgcs-docker-misc" {
   name      = "lgcs-docker-misc"
   node_name = "pve"
   agent {
-    enabled = false
+    enabled = true
   }
   cpu {
     cores = 8

@@ -26,6 +26,7 @@ resource "proxmox_virtual_environment_vm" "lgcs-dev-machine" {
   }
   network_device {
     bridge = "vmbr0"
+    firewall = true
   }
   operating_system {
     type = "l26"

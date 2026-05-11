@@ -16,7 +16,6 @@ resource "proxmox_virtual_environment_file" "cloud_config" {
             - ${trimspace(file("${path.module}/id_lordgasmic.pub"))}
 
         - name: ansible
-          sudo: ALL=(ALL) NOPASSWD:/usr/bin/apt
           groups: sudo
           shell: /bin/bash
           ssh_authorized_keys:

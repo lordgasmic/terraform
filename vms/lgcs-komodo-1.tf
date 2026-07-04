@@ -1,5 +1,5 @@
-resource "proxmox_virtual_environment_vm" "lgcs-docker-misc" {
-  name      = "lgcs-docker-misc"
+resource "proxmox_virtual_environment_vm" "lgcs-komodo-1" {
+  name      = "lgcs-komodo-1"
   node_name = "pve"
   agent {
     enabled = true
@@ -22,7 +22,7 @@ resource "proxmox_virtual_environment_vm" "lgcs-docker-misc" {
       }
     }
     user_data_file_id = proxmox_virtual_environment_file.cloud_config.id
-    meta_data_file_id = proxmox_virtual_environment_file.lgcs-docker-misc-hostname.id
+    meta_data_file_id = proxmox_virtual_environment_file.lgcs-komodo-1-hostname.id
   }
   network_device {
     mac_address = "bc:24:11:00:00:01"
@@ -34,7 +34,7 @@ resource "proxmox_virtual_environment_vm" "lgcs-docker-misc" {
   }
 }
 
-resource "proxmox_virtual_environment_file" "lgcs-docker-misc-hostname" {
+resource "proxmox_virtual_environment_file" "lgcs-komodo-1-hostname" {
   content_type = "snippets"
   datastore_id = "local"
   node_name    = "pve"
@@ -42,9 +42,9 @@ resource "proxmox_virtual_environment_file" "lgcs-docker-misc-hostname" {
   source_raw {
     data = <<-EOF
     #cloud-config
-    local-hostname: lgcs-docker-misc
+    local-hostname: lgcs-komodo-1
     EOF
 
-    file_name = "lgcs-docker-misc-hostname.yaml"
+    file_name = "lgcs-komodo-1-hostname.yaml"
   }
 }

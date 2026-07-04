@@ -5,10 +5,10 @@ resource "proxmox_virtual_environment_vm" "lgcs-komodo-1" {
     enabled = true
   }
   cpu {
-    cores = 8
-    type  = "x86-64-v2-AES"
+    cores = 4
+    type  = "host"
   }
-  memory { dedicated = 16384 }
+  memory { dedicated = 8192 }
   disk {
     datastore_id = "datastore"
     file_id      = "local:import/debian-13-generic-amd64-20260413-2447.qcow2"

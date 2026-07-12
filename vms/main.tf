@@ -19,3 +19,9 @@ provider "proxmox" {
     # private_key = file("~/.ssh/id_rsa")
   }
 }
+
+variable "ansible_password" {
+  type        = string
+  sensitive   = true
+  description = "The pre-generated SHA-512 password hash for the ansible user"
+}

@@ -20,6 +20,8 @@ resource "proxmox_virtual_environment_file" "cloud_config" {
           shell: /bin/bash
           ssh_authorized_keys:
             - ${trimspace(file("${path.module}/id_ansible.pub"))}
+          passwd: "${var.ansible_password}"
+          lock_passwd: false
       package_update: true
       packages:
         - qemu-guest-agent

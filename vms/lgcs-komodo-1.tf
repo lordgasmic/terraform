@@ -3,6 +3,7 @@ resource "proxmox_virtual_environment_vm" "lgcs-komodo-1" {
   node_name = "pve"
   agent {
     enabled = true
+    type    = "virtio"
   }
   cpu {
     cores = 4

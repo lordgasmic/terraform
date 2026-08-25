@@ -25,7 +25,7 @@ resource "proxmox_virtual_environment_vm" "komodo-karakeep" {
     meta_data_file_id = proxmox_virtual_environment_file.komodo-karakeep-hostname.id
   }
   network_device {
-    mac_address = "bc:24:11:00:00:04"
+    mac_address = "bc:24:11:00:00:07"
     bridge      = "vmbr0"
     firewall    = true
   }
